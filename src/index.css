@@ -4,10 +4,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 @theme {
-  --color-bg1: #f7fdff;
-  --color-bg2: #e9f8f1;
-  --color-text: #374151;
-  --color-details: #6fafa8;
-  --color-accent1: #a3d2ca;
-  --color-accent2: #f6caca;
+  --color-bg1: var(--bg1);
+  --color-bg2: var(--bg2);
+  --color-text: var(--text);
+  --color-details: var(--details);
+  --color-accent1: var(--accent1);
+  --color-accent2: var(--accent2);
+}
+
+:root {
+  --bg1: #f7fdff;
+  --bg2: #e9f8f1;
+  --text: #374151;
+  --details: #6fafa8;
+  --accent1: #a3d2ca;
+  --accent2: #f6caca;
+}
+
+.dark {
+  --bg1: #0d1b1e;
+  --bg2: #1c2b2f;
+  --text: #e5e7eb;
+  --details: #87d6ce;
+  --accent1: #a8e6dd;
+  --accent2: #f8bcbc;
 }
