@@ -1,5 +1,5 @@
 import { Route, Router, BrowserRouter } from "react-router-dom";
-import Autorization from "./frontend/pages/Autorization;";
+import Autorization from "./frontend/pages/Autorization";
 import Registration from "./frontend/pages/Registration";
 import Home from "./frontend/pages/Home";
 function App() {
