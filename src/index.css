@@ -10,6 +10,18 @@
   --color-details: var(--details);
   --color-accent1: var(--accent1);
   --color-accent2: var(--accent2);
+
+  --font-signika: "Signika", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
+}
+
+@layer components {
+  .input {
+    @apply bg-bg1 text-text rounded-[20px] py-2 px-4;
+  }
+  .logo-fil {
+    filter: var(--logo-filter);
+  }
 }
 
 :root {
@@ -19,6 +31,8 @@
   --details: #6fafa8;
   --accent1: #a3d2ca;
   --accent2: #f6caca;
+  --logo-filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
+    saturate(7488%) hue-rotate(152deg) brightness(106%) contrast(103%);
 }
 
 .dark {
@@ -28,4 +42,6 @@
   --details: #87d6ce;
   --accent1: #a8e6dd;
   --accent2: #f8bcbc;
+  --logo-filter: brightness(0) saturate(100%) invert(24%) sepia(31%)
+    saturate(393%) hue-rotate(178deg) brightness(92%) contrast(92%);
 }
