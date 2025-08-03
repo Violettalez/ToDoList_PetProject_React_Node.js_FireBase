@@ -1,4 +1,4 @@
-import { Route, Router, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Autorization from "./frontend/pages/Autorization";
 import Registration from "./frontend/pages/Registration";
 import Home from "./frontend/pages/Home";
@@ -6,11 +6,11 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Router>
-          <Route path="/" element={Autorization} />
-          <Route path="/registration" element={Registration} />
-          <Route path="/home" element={Home} />
-        </Router>
+        <Routes>
+          <Route path="/" element={<Autorization/>} />
+          <Route path="/registration" element={<Registration/>} />
+          <Route path="/home" element={<Home/>} />
+        </Routes>
       </BrowserRouter>
     </div>
   );
