@@ -2,7 +2,12 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { IoIosArrowDropupCircle } from "react-icons/io";
 import { IoMoon } from "react-icons/io5";
 import { FaSun } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
+
 import { useState, useEffect } from "react";
+
 function Home() {
   const optionsStatus = [
     { id: 1, value: "All", label: "All" },
@@ -14,6 +19,78 @@ function Home() {
     { id: 2, value: "Work", label: "Work" },
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
+  ];
+  const tasksData = [
+    {
+      id: 1,
+      title: "Task 1",
+      status: "Active",
+      category: "Work",
+      date: "2025-08-05",
+    },
+    {
+      id: 2,
+      title: "Task 2",
+      status: "Completed",
+      category: "Home",
+      date: "2025-08-05",
+    },
+    {
+      id: 3,
+      title: "Task 3",
+      status: "Active",
+      category: "Study",
+      date: "2025-08-05",
+    },
+    {
+      id: 4,
+      title: "Task 4",
+      status: "Completed",
+      category: "Work",
+      date: "2025-08-05",
+    },
+    {
+      id: 5,
+      title: "Task 5",
+      status: "Completed",
+      category: "Home",
+      date: "2025-08-05",
+    },
+    {
+      id: 6,
+      title: "Task 6",
+      status: "Completed",
+      category: "Study",
+      date: "2025-08-05",
+    },
+    {
+      id: 7,
+      title: "Task 7",
+      status: "Active",
+      category: "Work",
+      date: "2025-08-05",
+    },
+    {
+      id: 8,
+      title: "Task 8",
+      status: "Completed",
+      category: "Home",
+      date: "2025-08-05",
+    },
+    {
+      id: 9,
+      title: "Task 9",
+      status: "Active",
+      category: "Study",
+      date: "2025-08-05",
+    },
+    {
+      id: 10,
+      title: "Task 10",
+      status: "Completed",
+      category: "Work",
+      date: "2025-08-05",
+    },
   ];
 
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -136,7 +213,27 @@ function Home() {
           </div>
         </div>
       </div>
-      <div></div>
+      <div>
+        <div></div>
+        <div className="flex flex-col gap-4 justify-center">
+          {tasksData.map((task) => (
+            <div key={task.id} className="flex">
+              <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
+                {task.status==="Completed"&&<FaCheck/>}
+              </div>
+              <p>{task.title}|</p>
+              <p>#{task.category}</p>
+              <p>{task.date}</p>
+              <button>
+                <FaEdit />
+              </button>
+              <button>
+                <FaTrashAlt />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
