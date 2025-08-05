@@ -5,6 +5,7 @@ import { FaSun } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
+import { FiPlus } from "react-icons/fi";
 
 import { useState, useEffect } from "react";
 
@@ -125,8 +126,8 @@ function Home() {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    <div className="h-screen bg-bg1 bg-gradient-to-b from-bg1 to-accent1">
-      <div className="flex flex-row justify-between items-center px-[15%] py-2.5">
+    <div className="flex flex-col items-center h-full py-[2%] gap-10">
+      <div className="flex flex-1 flex-row justify-between items-center w-[70%]">
         <div className="flex items-center gap-4">
           <input
             type="date"
@@ -213,23 +214,53 @@ function Home() {
           </div>
         </div>
       </div>
-      <div>
-        <div></div>
-        <div className="flex flex-col gap-4 justify-center">
+      <div className="flex-10 w-[70%] bg-gradient-to-b from-accent1 to-bg1 flex flex-col items-center rounded-3xl shadow-main px-25 py-[3%] gap-5">
+        <div className="flex flex-row items-center w-full justify-between">
+          <div className="w-[50px]"></div>
+          <img
+            src="/logo.svg"
+            alt="logo"
+            className="w-[150px] logo-fil-static"
+          />
+          <button className="w-[50px] aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-full hover:bg-static-details transition duration-300">
+            <FiPlus className="text-xl text-text" />
+          </button>
+        </div>
+        <div className="flex flex-col gap-4 justify-center w-full">
           {tasksData.map((task) => (
-            <div key={task.id} className="flex">
-              <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
-                {task.status==="Completed"&&<FaCheck/>}
+            <div
+              key={task.id}
+              className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
+                  {task.status === "Completed" && (
+                    <FaCheck className="text-text" />
+                  )}
+                </div>
+                <p className="font-signika text-base font-semibold text-text">
+                  {task.title}
+                </p>
               </div>
-              <p>{task.title}|</p>
-              <p>#{task.category}</p>
-              <p>{task.date}</p>
-              <button>
-                <FaEdit />
-              </button>
-              <button>
-                <FaTrashAlt />
-              </button>
+              <div className="flex items-center gap-2 w-[30%] justify-between">
+                <div className="flex items-center justify-start gap-2">
+                  <p>|</p>
+                  <p className="text-base font-rubik text-details font-bold">
+                    #{task.category}
+                  </p>
+                </div>
+                <p className="opacity-80 text-text font-rubik text-base">
+                  {task.date}
+                </p>
+                <div className="flex items-center gap-2 ">
+                  <button>
+                    <FaEdit className="text-text text-base" />
+                  </button>
+                  <button>
+                    <FaTrashAlt className="text-accent2 text-base" />
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
