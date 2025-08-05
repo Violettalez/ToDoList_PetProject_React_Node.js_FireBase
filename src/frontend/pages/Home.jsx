@@ -48,12 +48,18 @@ function Home() {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    <div className="h-screen bg-bg1 bg-gradient-to-b from-text to-accent1">
+    <div className="h-screen bg-bg1 bg-gradient-to-b from-bg1 to-accent1">
       <div className="flex flex-row justify-between items-center px-[15%] py-2.5">
-        <div className="flex items-start gap-4">
+        <div className="flex items-center gap-4">
+          <input
+            type="date"
+            className="bg-details py-[13px] px-[15px] rounded-xl font-rubik text-xl h-full w-[195px] max-w-xs text-bg1"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
           <div className="relative inline-block w-[195px] max-w-xs">
             <div
-              className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between"
+              className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between shadow-main "
               onClick={() => setOpenStatusList(!openStatusList)}
             >
               {selectedStatus === "" ? "Status" : selectedStatus}
@@ -61,13 +67,13 @@ function Home() {
               {!openStatusList && <IoIosArrowDropdownCircle />}
             </div>
             {openStatusList && (
-              <ul className="absolute z-10 w-full bg-bg1 rounded-xl shadow-lg mt-1">
+              <ul className="absolute z-10 w-full bg-bg1 rounded-b-xl shadow-lg mt-1">
                 {optionsStatus.map((option) => (
                   <li
                     key={option.id}
                     value={option.value}
                     onClick={() => handleStatusChange(option.value)}
-                    className="text-text bg-bg1 py-[13px] px-[15px]  font-rubik text-l cursor-pointer hover:bg-details"
+                    className="text-text bg-bg1 py-[13px] px-[15px]  font-rubik text-l cursor-pointer hover:bg-accent1 hover:text-static-text rounded-b-xl"
                   >
                     {option.label}
                   </li>
@@ -76,16 +82,9 @@ function Home() {
             )}
           </div>
 
-          <input
-            type="date"
-            className="bg-bg1 py-[13px] px-[15px] rounded-xl font-rubik text-xl h-full w-[195px] max-w-xs text-text"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-          />
-
           <div className="relative inline-block w-[195px] max-w-xs">
             <div
-              className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between"
+              className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between shadow-main"
               onClick={() => setOpenCategoryList(!openCategoryList)}
             >
               {selectedCategory === "" ? "Category" : selectedCategory}
@@ -93,13 +92,13 @@ function Home() {
               {!openCategoryList && <IoIosArrowDropdownCircle />}
             </div>
             {openCategoryList && (
-              <ul className="absolute z-10 w-full bg-bg1 rounded-xl shadow-lg mt-1">
+              <ul className="absolute z-10 w-full bg-bg1 shadow-lg mt-1 shadow-main rounded-b-xl">
                 {optionsCategory.map((option) => (
                   <li
                     key={option.id}
                     value={option.value}
                     onClick={() => handleCategoryChange(option.value)}
-                    className="text-text bg-bg1 py-[13px] px-[15px]  font-rubik text-l cursor-pointer hover:bg-details"
+                    className="text-text bg-bg1 py-[13px] px-[15px]  font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
                   >
                     {option.label}
                   </li>
@@ -117,22 +116,22 @@ function Home() {
               }`}
             >
               <div
-                className={`flex justufy-center items-center  bg-bg1 w-6 h-6 rounded-full shadow-md transform transition duration-300  ${
+                className={`flex justufy-center items-center  bg-bg1 w-6 h-6 rounded-full transform transition duration-300  ${
                   isDark ? "translate-x-6" : "translate-x-0"
                 }`}
               >
                 {isDark ? (
-                  <IoMoon className="text-text w-full text-center" />
+                  <IoMoon className="text-details w-full text-center" />
                 ) : (
-                  <FaSun className="text-text w-full text-center" />
+                  <FaSun className="text-details w-full text-center" />
                 )}
               </div>
             </button>
           </div>
           <div className="flex items-center gap-4">
-            <div className="h-10 aspect-square rounded-full bg-bg1 bg-[url(/persone.png)] bg-cover bg-center bg-no-repeat"></div>
+            <div className="h-10 aspect-square rounded-full bg-[url(/persone.png)] bg-cover bg-center bg-no-repeat"></div>
             {/* This is a placeholder for user photo */}
-            <p className="text-signika text-xl text-bg1">Login</p>{" "}
+            <p className="text-signika text-xl text-text">Login</p>{" "}
             {/* This is a placeholder for user login */}
           </div>
         </div>
