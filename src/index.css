@@ -32,6 +32,9 @@
   .logo-fil {
     filter: var(--logo-filter);
   }
+  .logo-fil-static {
+    filter: var(--logo-filter-static);
+  }
 }
 
 :root {
@@ -41,7 +44,7 @@
   --text: #374151;
   --details: #6fafa8;
   --accent1: #a3d2ca;
-  --accent2: #f6caca;
+  --accent2: #ca3535;
 
   /* Статичные переменные */
   --static-bg1: #f7fdff;
@@ -49,10 +52,11 @@
   --static-text: #374151;
   --static-details: #6fafa8;
   --static-accent1: #a3d2ca;
-  --static-accent2: #f6caca;
 
   --logo-filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
     saturate(7488%) hue-rotate(152deg) brightness(106%) contrast(103%);
+  --logo-filter-static: brightness(0) saturate(100%) invert(24%) sepia(31%)
+    saturate(393%) hue-rotate(178deg) brightness(92%) contrast(92%);
 }
 
 .dark {
@@ -61,9 +65,11 @@
   --text: #e5e7eb;
   --details: #87d6ce;
   --accent1: #a8e6dd;
-  --accent2: #f8bcbc;
+  --accent2: #f89a9a;
 
   /* Статичные не переопределяются */
   --logo-filter: brightness(0) saturate(100%) invert(24%) sepia(31%)
+    saturate(393%) hue-rotate(178deg) brightness(92%) contrast(92%);
+  --logo-filter-static: brightness(0) saturate(100%) invert(24%) sepia(31%)
     saturate(393%) hue-rotate(178deg) brightness(92%) contrast(92%);
 }
