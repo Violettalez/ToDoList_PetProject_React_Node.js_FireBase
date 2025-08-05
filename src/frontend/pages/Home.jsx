@@ -67,7 +67,7 @@ function Home() {
               {!openStatusList && <IoIosArrowDropdownCircle />}
             </div>
             {openStatusList && (
-              <ul className="absolute z-10 w-full bg-bg1 rounded-b-xl shadow-lg mt-1">
+              <ul className="absolute z-10 w-full bg-bg1 rounded-b-xl shadow-main mt-1">
                 {optionsStatus.map((option) => (
                   <li
                     key={option.id}
@@ -92,7 +92,7 @@ function Home() {
               {!openCategoryList && <IoIosArrowDropdownCircle />}
             </div>
             {openCategoryList && (
-              <ul className="absolute z-10 w-full bg-bg1 shadow-lg mt-1 shadow-main rounded-b-xl">
+              <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
                 {optionsCategory.map((option) => (
                   <li
                     key={option.id}
