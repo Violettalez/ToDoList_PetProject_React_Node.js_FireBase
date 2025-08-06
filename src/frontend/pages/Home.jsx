@@ -6,10 +6,14 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 import { FiPlus } from "react-icons/fi";
+import { IoExit } from "react-icons/io5";
 
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function Home() {
+  const navigate = useNavigate();
+
   const optionsStatus = [
     { id: 1, value: "All", label: "All" },
     { id: 2, value: "Active", label: "Active" },
@@ -96,6 +100,7 @@ function Home() {
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
@@ -206,11 +211,31 @@ function Home() {
               </div>
             </button>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="h-10 aspect-square rounded-full bg-[url(/persone.png)] bg-cover bg-center bg-no-repeat"></div>
-            {/* This is a placeholder for user photo */}
-            <p className="text-signika text-xl text-text">Login</p>{" "}
-            {/* This is a placeholder for user login */}
+          <div className="relative flex">
+            <div
+              className="flex items-center gap-4"
+              onClick={() => setOpenProfile(!openProfile)}
+            >
+              <div className="h-10 aspect-square rounded-full bg-[url(/persone.png)] bg-cover bg-center bg-no-repeat"></div>
+              {/* This is a placeholder for user photo */}
+              <p className="text-signika text-xl text-text">Login</p>{" "}
+              {/* This is a placeholder for user login */}
+            </div>
+            {openProfile && (
+              <div className="absolute top-10 bg-bg1 rounded-xl shadow-main p-4 w-[110%]">
+                <ul className="flex flex-col gap-2">
+                  <li
+                    className="flex justify-between items-center cursor-pointer"
+                    onClick={() => {
+                      navigate("/");
+                    }}
+                  >
+                    <IoExit className="text-accent2 text-base font-signika" />
+                    <p className="text-text text-base font-signika">Sign out</p>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
