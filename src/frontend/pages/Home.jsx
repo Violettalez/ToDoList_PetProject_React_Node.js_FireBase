@@ -7,6 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 import { FiPlus } from "react-icons/fi";
 import { IoExit } from "react-icons/io5";
+import { MdOutlineClose } from "react-icons/md";
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -20,6 +21,7 @@ function Home() {
     { id: 3, value: "Completed", label: "Completed" },
   ];
   const optionsCategory = [
+    { id: 0, value: "New Category", label: "New Category" },
     { id: 1, value: "All", label: "All" },
     { id: 2, value: "Work", label: "Work" },
     { id: 3, value: "Home", label: "Home" },
@@ -116,6 +118,14 @@ function Home() {
     setOpenCategoryList(false);
   };
 
+  const [selectedCategoryNT, setSelectedCategoryNT] = useState("");
+  const [openCategoryListNT, setOpenCategoryListNT] = useState(false);
+
+  const handleCategoryChangeNT = (value) => {
+    setSelectedCategoryNT(value);
+    setOpenCategoryListNT(false);
+  };
+
   const today = new Date().toISOString().split("T")[0];
   const [selectedDate, setSelectedDate] = useState(today);
 
@@ -130,6 +140,8 @@ function Home() {
   }, [isDark]);
 
   const toggleTheme = () => setIsDark(!isDark);
+
+  const [openNewTask, setOpenNewTask] = useState(false);
 
   return (
     <div className="flex flex-col items-center h-full py-[2%] gap-10">
@@ -181,16 +193,18 @@ function Home() {
             </div>
             {openCategoryList && (
               <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
-                {optionsCategory.map((option) => (
-                  <li
-                    key={option.id}
-                    value={option.value}
-                    onClick={() => handleCategoryChange(option.value)}
-                    className="text-text bg-bg1 py-[13px] px-[15px]  font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
-                  >
-                    {option.label}
-                  </li>
-                ))}
+                {optionsCategory
+                  .filter((option) => option.id !== 0)
+                  .map((option) => (
+                    <li
+                      key={option.id}
+                      value={option.value}
+                      onClick={() => handleCategoryChange(option.value)}
+                      className="text-text bg-bg1 py-[13px] px-[15px]  font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
+                    >
+                      {option.label}
+                    </li>
+                  ))}
               </ul>
             )}
           </div>
@@ -261,7 +275,10 @@ function Home() {
           />
 
           {/* Add new task button*/}
-          <button className="w-[50px] aspect-square bg-bg1 shadow-main flex items-center justify-center cursor-pointer rounded-full hover:bg-static-details transition duration-300">
+          <button
+            onClick={() => setOpenNewTask(!openNewTask)}
+            className="w-[50px] aspect-square bg-bg1 shadow-main flex items-center justify-center cursor-pointer rounded-full hover:bg-static-details transition duration-300"
+          >
             <FiPlus className="text-xl text-text" />
           </button>
         </div>
@@ -284,7 +301,11 @@ function Home() {
                 </div>
 
                 {/*Title*/}
-                <p className={`font-signika text-base font-semibold text-text ${task.status === "Completed" && ("line-through")}`}>
+                <p
+                  className={`font-signika text-base font-semibold text-text ${
+                    task.status === "Completed" && "line-through"
+                  }`}
+                >
                   {task.title}
                 </p>
               </div>
@@ -317,6 +338,83 @@ function Home() {
           ))}
         </div>
       </div>
+
+      {/*Overlay window for creating new tasks*/}
+      {openNewTask && (
+        <div>
+          <div className="fixed inset-0 bg-static-text opacity-80 flex items-center justify-center z-6"></div>
+          <div className="fixed inset-0 flex items-center justify-center z-10">
+            <div className="bg-bg2 rounded-3xl shadow-main p-8 w-[40%]">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-text text-2xl font-signika text-center w-[99%]">
+                  New Task
+                </h2>
+                <p
+                  className="text-text text-xl font-signika cursor-pointer"
+                  onClick={() => setOpenNewTask(!openNewTask)}
+                >
+                  <MdOutlineClose />
+                </p>
+              </div>
+              <div className="flex flex-col gap-4">
+                <input
+                  type="text"
+                  placeholder="Title"
+                  className="input shadow-main"
+                />
+
+                {/* Input category for new task*/}
+                <div className="relative inline-block cursor-pointer">
+                  <div
+                    className="flex items-center justify-between input shadow-main"
+                    onClick={() => setOpenCategoryListNT(!openCategoryListNT)}
+                  >
+                    {selectedCategoryNT === ""
+                      ? "Category"
+                      : selectedCategoryNT}
+                    {openCategoryListNT && <IoIosArrowDropupCircle />}
+                    {!openCategoryListNT && <IoIosArrowDropdownCircle />}
+                  </div>
+                  {openCategoryListNT && (
+                    <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
+                      {optionsCategory
+                        .filter((option) => option.id !== 1)
+                        .map((option) => (
+                          <li
+                            key={option.id}
+                            value={option.value}
+                            onClick={() => handleCategoryChangeNT(option.value)}
+                            className="text-text bg-bg1 py-[13px] px-[15px] font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
+                          >
+                            {option.label}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Input for new category*/}
+                {selectedCategoryNT === "New Category" && (
+                  <input
+                    type="text"
+                    placeholder="New category..."
+                    className="input shadow-main"
+                  />
+                )}
+                <div className="flex flex-row justify-between items-center gap-4">
+                  {/* Input date for new task*/}
+                  <input type="date" className="input shadow-main flex-4" />
+
+                  {/* Save button for new task*/}
+                  <button className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
