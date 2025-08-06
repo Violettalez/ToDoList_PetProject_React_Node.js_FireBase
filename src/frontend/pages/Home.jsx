@@ -101,6 +101,7 @@ function Home() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+  const [hoveredId, setHoveredId] = useState(null);
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
@@ -271,6 +272,8 @@ function Home() {
             <div
               key={task.id}
               className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
+              onMouseEnter={() => setHoveredId(task.id)}
+              onMouseLeave={() => setHoveredId(null)}
             >
               <div className="flex items-center gap-3 cursor-pointer">
                 {/*Check box field*/}
@@ -299,14 +302,16 @@ function Home() {
                 </p>
 
                 {/*Edit button and delete button*/}
-                <div className="flex items-center gap-2 ">
-                  <button>
-                    <FaEdit className="text-text text-base cursor-pointer" />
-                  </button>
-                  <button>
-                    <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
-                  </button>
-                </div>
+                {hoveredId === task.id && (
+                  <div className=" flex items-center gap-2">
+                    <button>
+                      <FaEdit className="text-text text-base cursor-pointer" />
+                    </button>
+                    <button>
+                      <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
