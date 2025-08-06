@@ -136,11 +136,11 @@ function Home() {
         <div className="flex items-center gap-4">
           <input
             type="date"
-            className="bg-details py-[13px] px-[15px] rounded-xl font-rubik text-xl h-full w-[195px] max-w-xs text-bg1"
+            className="bg-details py-[13px] px-[15px] rounded-xl font-rubik text-xl h-full w-[195px] max-w-xs text-bg1 cursor-pointer"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
-          <div className="relative inline-block w-[195px] max-w-xs">
+          <div className="relative inline-block w-[195px] max-w-xs cursor-pointer">
             <div
               className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between shadow-main "
               onClick={() => setOpenStatusList(!openStatusList)}
@@ -165,7 +165,7 @@ function Home() {
             )}
           </div>
 
-          <div className="relative inline-block w-[195px] max-w-xs">
+          <div className="relative inline-block w-[195px] max-w-xs cursor-pointer">
             <div
               className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between shadow-main"
               onClick={() => setOpenCategoryList(!openCategoryList)}
@@ -191,10 +191,9 @@ function Home() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div>
             <button
               onClick={toggleTheme}
-              className={`w-14 h-8 flex items-center rounded-full px-1 transition duration-300 ${
+              className={`w-14 h-8 flex items-center rounded-full px-1 cursor-pointer transition duration-300 ${
                 isDark ? "bg-details" : "bg-details"
               }`}
             >
@@ -210,7 +209,6 @@ function Home() {
                 )}
               </div>
             </button>
-          </div>
           <div className="relative flex">
             <div
               className="flex items-center gap-4"
@@ -247,7 +245,7 @@ function Home() {
             alt="logo"
             className="w-[150px] logo-fil-static"
           />
-          <button className="w-[50px] aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-full hover:bg-static-details transition duration-300">
+          <button className="w-[50px] aspect-square bg-bg1 shadow-main flex items-center justify-center cursor-pointer rounded-full hover:bg-static-details transition duration-300">
             <FiPlus className="text-xl text-text" />
           </button>
         </div>
@@ -257,7 +255,7 @@ function Home() {
               key={task.id}
               className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 cursor-pointer">
                 <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
                   {task.status === "Completed" && (
                     <FaCheck className="text-text" />
@@ -279,10 +277,10 @@ function Home() {
                 </p>
                 <div className="flex items-center gap-2 ">
                   <button>
-                    <FaEdit className="text-text text-base" />
+                    <FaEdit className="text-text text-base cursor-pointer" />
                   </button>
                   <button>
-                    <FaTrashAlt className="text-accent2 text-base" />
+                    <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
                   </button>
                 </div>
               </div>
