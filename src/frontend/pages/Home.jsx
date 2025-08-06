@@ -143,6 +143,20 @@ function Home() {
 
   const [openNewTask, setOpenNewTask] = useState(false);
 
+  //Sorting data
+
+  const filteredTasks = tasksData.filter((task) => {
+    const statusMatch =
+      selectedStatus === "All" ||
+      selectedStatus === "" ||
+      task.status === selectedStatus;
+    const categoryMatch =
+      selectedCategory === "All" ||
+      selectedCategory === "" ||
+      task.category === selectedCategory;
+    return statusMatch && categoryMatch;
+  });
+
   return (
     <div className="flex flex-col items-center h-full py-[2%] gap-10">
       <div className="flex flex-1 flex-row justify-between items-center w-[70%]">
@@ -285,7 +299,7 @@ function Home() {
 
         {/*Main table with tasks*/}
         <div className="flex flex-col gap-4 justify-center w-full">
-          {tasksData.map((task) => (
+          {filteredTasks.map((task) => (
             <div
               key={task.id}
               className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
