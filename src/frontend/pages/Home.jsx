@@ -134,12 +134,15 @@ function Home() {
     <div className="flex flex-col items-center h-full py-[2%] gap-10">
       <div className="flex flex-1 flex-row justify-between items-center w-[70%]">
         <div className="flex items-center gap-4">
+          {/* Input date for showing tasks by date*/}
           <input
             type="date"
             className="bg-details py-[13px] px-[15px] rounded-xl font-rubik text-xl h-full w-[195px] max-w-xs text-bg1 cursor-pointer"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
+
+          {/* Input status*/}
           <div className="relative inline-block w-[195px] max-w-xs cursor-pointer">
             <div
               className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between shadow-main "
@@ -165,6 +168,7 @@ function Home() {
             )}
           </div>
 
+          {/* Input category*/}
           <div className="relative inline-block w-[195px] max-w-xs cursor-pointer">
             <div
               className="text-text bg-bg1 py-[13px] px-[15px] pr-4 rounded-xl font-rubik text-xl appearance-none w-[195px] flex items-center justify-between shadow-main"
@@ -191,24 +195,27 @@ function Home() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-            <button
-              onClick={toggleTheme}
-              className={`w-14 h-8 flex items-center rounded-full px-1 cursor-pointer transition duration-300 ${
-                isDark ? "bg-details" : "bg-details"
+          {/* Switch light and dark mode*/}
+          <button
+            onClick={toggleTheme}
+            className={`w-14 h-8 flex items-center rounded-full px-1 cursor-pointer transition duration-300 ${
+              isDark ? "bg-details" : "bg-details"
+            }`}
+          >
+            <div
+              className={`flex justufy-center items-center  bg-bg1 w-6 h-6 rounded-full transform transition duration-300  ${
+                isDark ? "translate-x-6" : "translate-x-0"
               }`}
             >
-              <div
-                className={`flex justufy-center items-center  bg-bg1 w-6 h-6 rounded-full transform transition duration-300  ${
-                  isDark ? "translate-x-6" : "translate-x-0"
-                }`}
-              >
-                {isDark ? (
-                  <IoMoon className="text-details w-full text-center" />
-                ) : (
-                  <FaSun className="text-details w-full text-center" />
-                )}
-              </div>
-            </button>
+              {isDark ? (
+                <IoMoon className="text-details w-full text-center" />
+              ) : (
+                <FaSun className="text-details w-full text-center" />
+              )}
+            </div>
+          </button>
+
+          {/* Profile button*/}
           <div className="relative flex">
             <div
               className="flex items-center gap-4"
@@ -219,6 +226,8 @@ function Home() {
               <p className="text-signika text-xl text-text">Login</p>{" "}
               {/* This is a placeholder for user login */}
             </div>
+
+            {/* Profile menu overlay*/}
             {openProfile && (
               <div className="absolute top-10 bg-bg1 rounded-xl shadow-main p-4 w-[110%]">
                 <ul className="flex flex-col gap-2">
@@ -237,18 +246,26 @@ function Home() {
           </div>
         </div>
       </div>
+
+      {/* Main container with tasks*/}
       <div className="flex-10 w-[70%] bg-gradient-to-b from-accent1 to-bg1 flex flex-col items-center rounded-3xl shadow-main px-25 py-[3%] gap-5">
         <div className="flex flex-row items-center w-full justify-between">
           <div className="w-[50px]"></div>
+
+          {/* Main logo*/}
           <img
             src="/logo.svg"
             alt="logo"
             className="w-[150px] logo-fil-static"
           />
+
+          {/* Add new task button*/}
           <button className="w-[50px] aspect-square bg-bg1 shadow-main flex items-center justify-center cursor-pointer rounded-full hover:bg-static-details transition duration-300">
             <FiPlus className="text-xl text-text" />
           </button>
         </div>
+
+        {/*Main table with tasks*/}
         <div className="flex flex-col gap-4 justify-center w-full">
           {tasksData.map((task) => (
             <div
@@ -256,15 +273,20 @@ function Home() {
               className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
             >
               <div className="flex items-center gap-3 cursor-pointer">
+                {/*Check box field*/}
                 <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
                   {task.status === "Completed" && (
                     <FaCheck className="text-text" />
                   )}
                 </div>
+
+                {/*Title*/}
                 <p className="font-signika text-base font-semibold text-text">
                   {task.title}
                 </p>
               </div>
+
+              {/*Addition information about task*/}
               <div className="flex items-center gap-2 w-[30%] justify-between">
                 <div className="flex items-center justify-start gap-2">
                   <p>|</p>
@@ -275,6 +297,8 @@ function Home() {
                 <p className="opacity-80 text-text font-rubik text-base">
                   {task.date}
                 </p>
+
+                {/*Edit button and delete button*/}
                 <div className="flex items-center gap-2 ">
                   <button>
                     <FaEdit className="text-text text-base cursor-pointer" />
