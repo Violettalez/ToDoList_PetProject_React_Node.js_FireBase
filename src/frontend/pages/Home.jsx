@@ -284,7 +284,7 @@ function Home() {
                 </div>
 
                 {/*Title*/}
-                <p className="font-signika text-base font-semibold text-text">
+                <p className={`font-signika text-base font-semibold text-text ${task.status === "Completed" && ("line-through")}`}>
                   {task.title}
                 </p>
               </div>
