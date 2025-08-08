@@ -3,7 +3,6 @@ import admin from "firebase-admin";
 import fs from "fs";
 import fetch from "node-fetch";
 import cors from "cors";
-import { getFirestore } from "firebase-admin/firestore";
 
 const serviceAccount = JSON.parse(fs.readFileSync("./serviceAccountKey.json", "utf8"));
 const API_KEY = "AIzaSyAKk4zZBMerlXwPXEzmeYLcWSqq5oRs-Fg";
@@ -11,7 +10,7 @@ const API_KEY = "AIzaSyAKk4zZBMerlXwPXEzmeYLcWSqq5oRs-Fg";
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
-const db = getFirestore();
+const db = admin.firestore();
 
 const app = express();
 app.use(cors());
