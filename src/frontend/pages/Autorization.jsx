@@ -9,44 +9,8 @@ function Autorization() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const validatePassword = (password) => {
-    const minLength = 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    // Check if password meets all criteria
-    if (password.length < minLength) {
-      setError(`Password must be at least ${minLength} characters long.`);
-      alert(`Password must be at least ${minLength} characters long.`);
-      return false;
-    } else if (!hasUpperCase) {
-      setError("Password must contain at least one uppercase letter.");
-      alert("Password must contain at least one uppercase letter.");
-      return false;
-    } else if (!hasLowerCase) {
-      setError("Password must contain at least one lowercase letter.");
-      alert("Password must contain at least one lowercase letter.");
-      return false;
-    } else if (!hasNumber) {
-      setError("Password must contain at least one number.");
-      alert("Password must contain at least one number.");
-      return false;
-    } else if (!hasSpecialChar) {
-      setError("Password must contain at least one special character.");
-      alert("Password must contain at least one special character.");
-      return false;
-    }
-    return (
-      password.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSpecialChar
-    );
-  };
   const handleLogin = async () => {
-    const trimmedLogin = login.trim();
+    /*const trimmedLogin = login.trim();
     const trimmedPassword = password.trim();
     if (!trimmedLogin) {
       setError("Login is required");
@@ -60,7 +24,7 @@ function Autorization() {
     }
     if (validatePassword(trimmedPassword) === false) {
       return;
-    }
+    }*/
     try {
       //const res = await loginUser(trimmedLogin, trimmedPassword);
       //localStorage.setItem("token", res.data.idToken);
