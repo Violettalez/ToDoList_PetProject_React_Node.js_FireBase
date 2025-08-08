@@ -158,8 +158,8 @@ function Home() {
   });
 
   return (
-    <div className="flex flex-col items-center h-full py-[2%] gap-10">
-      <div className="flex flex-1 flex-row justify-between items-center w-[70%]">
+    <div className="relative flex flex-col items-center h-full py-[2%] gap-10 bg-gradient-to-b from-bg1 to-accent1">
+      <div className="flex flex-1 flex-row justify-between items-center w-[70%] ">
         <div className="flex items-center gap-4">
           {/* Input date for showing tasks by date*/}
           <input

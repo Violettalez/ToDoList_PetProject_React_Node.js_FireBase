@@ -4,7 +4,6 @@ import Registration from "./frontend/pages/Registration";
 import Home from "./frontend/pages/Home";
 function App() {
   return (
-    <div className=" h-full bg-gradient-to-b from-bg1 to-accent1">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Autorization />} />
@@ -12,7 +11,6 @@ function App() {
           <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>
-    </div>
   );
 }
 
