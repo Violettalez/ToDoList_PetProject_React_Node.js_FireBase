@@ -154,7 +154,8 @@ function Home() {
       selectedCategory === "All" ||
       selectedCategory === "" ||
       task.category === selectedCategory;
-    return statusMatch && categoryMatch;
+    const dateMatch = task.date === selectedDate;
+    return statusMatch && categoryMatch && dateMatch;
   });
 
   return (
@@ -299,57 +300,63 @@ function Home() {
 
         {/*Main table with tasks*/}
         <div className="flex flex-col gap-4 justify-center w-full">
-          {filteredTasks.map((task) => (
-            <div
-              key={task.id}
-              className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
-              onMouseEnter={() => setHoveredId(task.id)}
-              onMouseLeave={() => setHoveredId(null)}
-            >
-              <div className="flex items-center gap-3 cursor-pointer">
-                {/*Check box field*/}
-                <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
-                  {task.status === "Completed" && (
-                    <FaCheck className="text-text" />
-                  )}
-                </div>
+          {filteredTasks.length === 0 ? (
+            <p className="text-text text-xl font-signika text-center">
+              No tasks found
+            </p>
+          ) : (
+            filteredTasks.map((task) => (
+              <div
+                key={task.id}
+                className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
+                onMouseEnter={() => setHoveredId(task.id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
+                <div className="flex items-center gap-3 cursor-pointer">
+                  {/*Check box field*/}
+                  <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
+                    {task.status === "Completed" && (
+                      <FaCheck className="text-text" />
+                    )}
+                  </div>
 
-                {/*Title*/}
-                <p
-                  className={`font-signika text-base font-semibold text-text ${
-                    task.status === "Completed" && "line-through"
-                  }`}
-                >
-                  {task.title}
-                </p>
-              </div>
-
-              {/*Addition information about task*/}
-              <div className="flex items-center gap-2 w-[30%] justify-between">
-                <div className="flex items-center justify-start gap-2">
-                  <p>|</p>
-                  <p className="text-base font-rubik text-details font-bold">
-                    #{task.category}
+                  {/*Title*/}
+                  <p
+                    className={`font-signika text-base font-semibold text-text ${
+                      task.status === "Completed" && "line-through"
+                    }`}
+                  >
+                    {task.title}
                   </p>
                 </div>
-                <p className="opacity-80 text-text font-rubik text-base">
-                  {task.date}
-                </p>
 
-                {/*Edit button and delete button*/}
-                {hoveredId === task.id && (
-                  <div className=" flex items-center gap-2">
-                    <button>
-                      <FaEdit className="text-text text-base cursor-pointer" />
-                    </button>
-                    <button>
-                      <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
-                    </button>
+                {/*Addition information about task*/}
+                <div className="flex items-center gap-2 w-[30%] justify-between">
+                  <div className="flex items-center justify-start gap-2">
+                    <p>|</p>
+                    <p className="text-base font-rubik text-details font-bold">
+                      #{task.category}
+                    </p>
                   </div>
-                )}
+                  <p className="opacity-80 text-text font-rubik text-base">
+                    {task.date}
+                  </p>
+
+                  {/*Edit button and delete button*/}
+                  {hoveredId === task.id && (
+                    <div className=" flex items-center gap-2">
+                      <button>
+                        <FaEdit className="text-text text-base cursor-pointer" />
+                      </button>
+                      <button>
+                        <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
