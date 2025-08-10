@@ -12,6 +12,9 @@ import { MdOutlineClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+//import { userData } from "../../backend/api";
+import e from "cors";
+
 function Home() {
   const navigate = useNavigate();
 
@@ -27,7 +30,7 @@ function Home() {
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
   ];
-  const tasksData = [
+  let tasksData = [
     {
       id: 1,
       title: "Task 1",
@@ -131,7 +134,18 @@ function Home() {
 
   const [isDark, setIsDark] = useState(false);
 
+  const getUserTasks = () => {
+    try {
+      const loginUser = localStorage.getItem("token");
+      //const res = await userData(loginUser);
+      //return res.data.tasks;
+    } catch (error) {
+      console.error("Error fetching user tasks:", error);
+    }
+  };
+
   useEffect(() => {
+    //tasksData = getUserTasks();
     if (isDark) {
       document.documentElement.classList.add("dark");
     } else {
