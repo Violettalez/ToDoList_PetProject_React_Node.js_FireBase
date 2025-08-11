@@ -116,9 +116,20 @@ function Home() {
   const [selectedDate, setSelectedDate] = useState(today);
   const [isDark, setIsDark] = useState(false);
   const [openNewTask, setOpenNewTask] = useState(false);
-  const [editTask, setEditTask] = useState(null);
   const [editWindow, setEditWindow] = useState(false);
   const [selectedCategoryET, setSelectedCategoryET] = useState("");
+  const [newTask, setNewTask] = useState({
+    title: "",
+    category: "",
+    date: today,
+  });
+  const [editTask, setEditTask] = useState({
+    id: null,
+    title: "",
+    category: "",
+    date: today,
+  });
+  const [editTaskID, setEditTaskID] = useState(null);
 
   const handleCategoryChangeET = (value) => {
     setSelectedCategoryET(value);
@@ -169,6 +180,52 @@ function Home() {
       //setTasksData(getUserTasks());
     } catch (error) {
       console.error("Error updating task status:", error);
+    }
+  };
+
+  const deleteTask = (idTask) => {
+    // Remove the task from the local state
+    setTasksData((prevTasks) => prevTasks.filter((task) => task.id !== idTask));
+    // Remove the task from the backend
+    try {
+      const loginUser = localStorage.getItem("token");
+      //const res = await deleteTaskById(loginUser, idTask);
+      console.log("Task deleted successfully");
+      //setTasksData(getUserTasks());
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  const addNewTask = (newTask) => {
+    // Add the new task to the local state
+    setTasksData((prevTasks) => [...prevTasks, newTask]);
+    // Add the new task to the backend
+    try {
+      const loginUser = localStorage.getItem("token");
+      //const res = await addTask(loginUser, newTask.title, newTask.category, newTask.date);
+      console.log("New task added successfully");
+      //setTasksData(getUserTasks());
+    } catch (error) {
+      console.error("Error adding new task:", error);
+    }
+  };
+
+  const editTaskHandler = (idTask, updatedTask) => {
+    // Update the task in the local state
+    setTasksData((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === idTask ? { ...task, ...updatedTask } : task
+      )
+    );
+    // Update the task in the backend
+    try {
+      const loginUser = localStorage.getItem("token");
+      //const res = await updateTask(loginUser, idTask, updatedTask);
+      console.log("Task edited successfully");
+      //setTasksData(getUserTasks());
+    } catch (error) {
+      console.error("Error editing task:", error);
     }
   };
 
@@ -404,21 +461,21 @@ function Home() {
                       <div className="flex items -center gap-2">
                         <button
                           onClick={() => {
-                            setEditTask(task.id);
+                            setEditTaskID(task.id);
                             setEditWindow(!editWindow);
                           }}
                         >
                           <FaEdit className="text-text text-base cursor-pointer" />
                         </button>
-                        <button>
+                        <button onClick={() => deleteTask(task.id)}>
                           <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
                         </button>
                       </div>
                     )}
                   </div>
                 </div>
-                {/*Overlay window for creating new tasks*/}
-                {editTask === task.id && editWindow && (
+                {/*Overlay window for edit task*/}
+                {editTaskID === task.id && editWindow && (
                   <div>
                     <div className="fixed inset-0 bg-static-text opacity-80 flex items-center justify-center z-6"></div>
                     <div className="fixed inset-0 flex items-center justify-center z-10">
@@ -440,9 +497,12 @@ function Home() {
                             placeholder="Title"
                             className="input shadow-main"
                             value={task.title}
+                            onChange={(e) =>
+                              setEditTask({ ...task, title: e.target.value })
+                            }
                           />
 
-                          {/* Input category for new task*/}
+                          {/* Input edit category*/}
                           <div className="relative inline-block cursor-pointer">
                             <div
                               className="flex items-center justify-between input shadow-main"
@@ -466,9 +526,13 @@ function Home() {
                                     <li
                                       key={option.id}
                                       value={option.value}
-                                      onClick={() =>
-                                        handleCategoryChangeET(option.value)
-                                      }
+                                      onClick={() => {
+                                        handleCategoryChangeET(option.value);
+                                        setEditTask({
+                                          ...task,
+                                          category: option.value,
+                                        });
+                                      }}
                                       className="text-text bg-bg1 py-[13px] px-[15px] font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
                                     >
                                       {option.label}
@@ -484,18 +548,34 @@ function Home() {
                               type="text"
                               placeholder="New category..."
                               className="input shadow-main"
+                              onChange={(e) =>
+                                setEditTask({
+                                  ...task,
+                                  category: e.target.value,
+                                })
+                              }
                             />
                           )}
                           <div className="flex flex-row justify-between items-center gap-4">
-                            {/* Input date for new task*/}
+                            {/* Input edit date for task*/}
                             <input
                               type="date"
                               className="input shadow-main flex-4"
                               value={task.date}
+                              onChange={(e) =>
+                                setEditTask({ ...task, date: e.target.value })
+                              }
                             />
 
-                            {/* Save button for new task*/}
-                            <button className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer">
+                            {/* Edit button for task*/}
+                            <button
+                              onClick={() => {
+                                editTaskHandler(task.id, editTask);
+                                editTaskID(null);
+                                setEditWindow(!editWindow);
+                              }}
+                              className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer"
+                            >
                               Edit
                             </button>
                           </div>
@@ -532,6 +612,10 @@ function Home() {
                   type="text"
                   placeholder="Title"
                   className="input shadow-main"
+                  value={newTask.title}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, title: e.target.value })
+                  }
                 />
 
                 {/* Input category for new task*/}
@@ -554,7 +638,10 @@ function Home() {
                           <li
                             key={option.id}
                             value={option.value}
-                            onClick={() => handleCategoryChangeNT(option.value)}
+                            onClick={() => {
+                              handleCategoryChangeNT(option.value);
+                              newTask.category = option.value;
+                            }}
                             className="text-text bg-bg1 py-[13px] px-[15px] font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
                           >
                             {option.label}
@@ -570,6 +657,9 @@ function Home() {
                     type="text"
                     placeholder="New category..."
                     className="input shadow-main"
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, category: e.target.value })
+                    }
                   />
                 )}
                 <div className="flex flex-row justify-between items-center gap-4">
@@ -578,10 +668,26 @@ function Home() {
                     type="date"
                     className="input shadow-main flex-4"
                     value={selectedDate}
+                    onChange={(e) => (newTask.date = e.target.value)}
                   />
 
                   {/* Save button for new task*/}
-                  <button className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer">
+                  <button
+                    className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer"
+                    onClick={() => {
+                      addNewTask({
+                        id: tasksData.length + 1,
+                        title: newTask.title,
+                        status: "Active",
+                        category: newTask.category,
+                        date: newTask.date,
+                      });
+                      setOpenNewTask(false);
+                      setNewTask({ title: "", category: "", date: today });
+                    }}
+                    disabled={!newTask.title || !newTask.category}
+                    // Disable button if title or category is empty
+                  >
                     Save
                   </button>
                 </div>
