@@ -18,19 +18,21 @@ import e from "cors";
 function Home() {
   const navigate = useNavigate();
 
-  const optionsStatus = [
+  const [optionsStatus, setOptionsStatus] = useState([
     { id: 1, value: "All", label: "All" },
     { id: 2, value: "Active", label: "Active" },
     { id: 3, value: "Completed", label: "Completed" },
-  ];
-  const optionsCategory = [
+  ]);
+
+  const [optionsCategory, setOptionsCategory] = useState([
     { id: 0, value: "New Category", label: "New Category" },
     { id: 1, value: "All", label: "All" },
     { id: 2, value: "Work", label: "Work" },
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
-  ];
-  let tasksData = [
+  ]);
+
+  const [tasksData, setTasksData] = useState([
     {
       id: 1,
       title: "Task 1",
@@ -101,7 +103,7 @@ function Home() {
       category: "Work",
       date: "2025-08-05",
     },
-  ];
+  ]);
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
@@ -144,8 +146,33 @@ function Home() {
     }
   };
 
+  const changeTaskStatus = (idTask) => {
+    
+    // Update the task status in the local state
+    setTasksData((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === idTask
+          ? {
+              ...task,
+              status: task.status === "Active" ? "Completed" : "Active",
+            }
+          : task
+      )
+    );
+
+    // Update the task status in the backend 
+    try {
+      const loginUser = localStorage.getItem("token");
+      //const res = await updateTaskStatus(loginUser, idTask);
+      console.log("Task status updated successfully");
+      //setTasksData(getUserTasks());
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
   useEffect(() => {
-    //tasksData = getUserTasks();
+    //setTasksData(getUserTasks());
     if (isDark) {
       document.documentElement.classList.add("dark");
     } else {
@@ -328,7 +355,10 @@ function Home() {
               >
                 <div className="flex items-center gap-3 cursor-pointer">
                   {/*Check box field*/}
-                  <div className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm">
+                  <div
+                    className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm"
+                    onClick={() => changeTaskStatus(task.id)}
+                  >
                     {task.status === "Completed" && (
                       <FaCheck className="text-text" />
                     )}
