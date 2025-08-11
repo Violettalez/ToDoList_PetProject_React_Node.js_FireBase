@@ -116,6 +116,14 @@ function Home() {
   const [selectedDate, setSelectedDate] = useState(today);
   const [isDark, setIsDark] = useState(false);
   const [openNewTask, setOpenNewTask] = useState(false);
+  const [editTask, setEditTask] = useState(null);
+  const [editWindow, setEditWindow] = useState(false);
+  const [selectedCategoryET, setSelectedCategoryET] = useState("");
+
+  const handleCategoryChangeET = (value) => {
+    setSelectedCategoryET(value);
+    setOpenCategoryListNT(false);
+  };
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
@@ -164,14 +172,18 @@ function Home() {
     }
   };
 
-  useEffect(() => {
-    //setTasksData(getUserTasks());
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDark],[selectedDate]);
+  useEffect(
+    () => {
+      //setTasksData(getUserTasks());
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    },
+    [isDark],
+    [selectedDate]
+  );
 
   const toggleTheme = () => setIsDark(!isDark);
 
@@ -192,7 +204,7 @@ function Home() {
 
   return (
     <div className=" min-h-screen relative flex flex-col items-center gap-4 bg-gradient-to-b from-bg1 to-accent1">
-      <div className="flex flex-1 flex-row items-center justify-between md:gap-4 md:justify-start flex-wrap w-[95%] md:w-[70%]">
+      <div className="flex flex-row items-center justify-between md:gap-4 md:justify-start flex-wrap w-[95%] md:w-[70%]">
         {/* Input date for showing tasks by date*/}
         <input
           type="date"
@@ -314,7 +326,7 @@ function Home() {
       </div>
 
       {/* Main container with tasks*/}
-      <div className="flex-10 w-[95%] md:w-[70%] bg-gradient-to-b from-accent1 to-bg1 flex flex-col items-center rounded-3xl shadow-main px-[3%] md:px-25 py-[3%] gap-5">
+      <div className="w-[95%] md:w-[70%] bg-gradient-to-b from-accent1 to-bg1 flex flex-col items-center rounded-3xl shadow-main px-[3%] md:px-25 py-[3%] gap-5">
         <div className="flex flex-row items-center w-full justify-between">
           <div className="w-[40px]"></div>
 
@@ -347,57 +359,151 @@ function Home() {
             </div>
           ) : (
             filteredTasks.map((task) => (
-              <div
-                key={task.id}
-                className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
-                onMouseEnter={() => setHoveredId(task.id)}
-                onMouseLeave={() => setHoveredId(null)}
-              >
-                <div className="flex items-center gap-3 cursor-pointer">
-                  {/*Check box field*/}
-                  <div
-                    className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm"
-                    onClick={() => changeTaskStatus(task.id)}
-                  >
-                    {task.status === "Completed" && (
-                      <FaCheck className="text-text" />
-                    )}
-                  </div>
+              <div>
+                <div
+                  key={task.id}
+                  className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
+                  onMouseEnter={() => setHoveredId(task.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                >
+                  <div className="flex items-center gap-3 cursor-pointer">
+                    {/*Check box field*/}
+                    <div
+                      className="w-6 aspect-square bg-bg1 shadow-main flex items-center justify-center rounded-sm"
+                      onClick={() => changeTaskStatus(task.id)}
+                    >
+                      {task.status === "Completed" && (
+                        <FaCheck className="text-text" />
+                      )}
+                    </div>
 
-                  {/*Title*/}
-                  <p
-                    className={`font-signika text-sm md:text-base font-semibold text-text ${
-                      task.status === "Completed" && "line-through"
-                    }`}
-                  >
-                    {task.title}
-                  </p>
-                </div>
-
-                {/*Addition information about task*/}
-                <div className="flex items-center gap-2 md:w-[30%] justify-between">
-                  <div className="flex items-center justify-start gap-2">
-                    <p>|</p>
-                    <p className="text-sm md:text-base font-rubik text-details font-bold">
-                      #{task.category}
+                    {/*Title*/}
+                    <p
+                      className={`font-signika text-sm md:text-base font-semibold text-text ${
+                        task.status === "Completed" && "line-through"
+                      }`}
+                    >
+                      {task.title}
                     </p>
                   </div>
-                  <p className="hidden md:block opacity-80 text-text font-rubik text-base">
-                    {task.date}
-                  </p>
 
-                  {/*Edit button and delete button*/}
-                  {hoveredId === task.id && (
-                    <div className="flex items -center gap-2">
-                      <button>
-                        <FaEdit className="text-text text-base cursor-pointer" />
-                      </button>
-                      <button>
-                        <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
-                      </button>
+                  {/*Addition information about task*/}
+                  <div className="flex items-center gap-2 md:w-[30%] justify-between">
+                    <div className="flex items-center justify-start gap-2">
+                      <p>|</p>
+                      <p className="text-sm md:text-base font-rubik text-details font-bold">
+                        #{task.category}
+                      </p>
                     </div>
-                  )}
+                    <p className="hidden md:block opacity-80 text-text font-rubik text-base">
+                      {task.date}
+                    </p>
+
+                    {/*Edit button and delete button*/}
+                    {hoveredId === task.id && (
+                      <div className="flex items -center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditTask(task.id);
+                            setEditWindow(!editWindow);
+                          }}
+                        >
+                          <FaEdit className="text-text text-base cursor-pointer" />
+                        </button>
+                        <button>
+                          <FaTrashAlt className="text-accent2 text-base cursor-pointer" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {/*Overlay window for creating new tasks*/}
+                {editTask === task.id && editWindow && (
+                  <div>
+                    <div className="fixed inset-0 bg-static-text opacity-80 flex items-center justify-center z-6"></div>
+                    <div className="fixed inset-0 flex items-center justify-center z-10">
+                      <div className="bg-bg2 rounded-3xl shadow-main p-8 md:w-[30%]">
+                        <div className="flex justify-between items-center mb-4">
+                          <h2 className="text-text text-2xl font-signika text-center w-[99%]">
+                            Edit Task
+                          </h2>
+                          <p
+                            className="text-text text-xl font-signika cursor-pointer"
+                            onClick={() => setEditWindow(!editWindow)}
+                          >
+                            <MdOutlineClose />
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                          <input
+                            type="text"
+                            placeholder="Title"
+                            className="input shadow-main"
+                            value={task.title}
+                          />
+
+                          {/* Input category for new task*/}
+                          <div className="relative inline-block cursor-pointer">
+                            <div
+                              className="flex items-center justify-between input shadow-main"
+                              onClick={() =>
+                                setOpenCategoryListNT(!openCategoryListNT)
+                              }
+                            >
+                              {selectedCategoryET === ""
+                                ? task.category
+                                : selectedCategoryET}
+                              {openCategoryListNT && <IoIosArrowDropupCircle />}
+                              {!openCategoryListNT && (
+                                <IoIosArrowDropdownCircle />
+                              )}
+                            </div>
+                            {openCategoryListNT && (
+                              <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
+                                {optionsCategory
+                                  .filter((option) => option.id !== 1)
+                                  .map((option) => (
+                                    <li
+                                      key={option.id}
+                                      value={option.value}
+                                      onClick={() =>
+                                        handleCategoryChangeET(option.value)
+                                      }
+                                      className="text-text bg-bg1 py-[13px] px-[15px] font-rubik text-l cursor-pointer rounded-b-xl hover:bg-accent1 hover:text-static-text"
+                                    >
+                                      {option.label}
+                                    </li>
+                                  ))}
+                              </ul>
+                            )}
+                          </div>
+
+                          {/* Input for new category*/}
+                          {selectedCategoryNT === "New Category" && (
+                            <input
+                              type="text"
+                              placeholder="New category..."
+                              className="input shadow-main"
+                            />
+                          )}
+                          <div className="flex flex-row justify-between items-center gap-4">
+                            {/* Input date for new task*/}
+                            <input
+                              type="date"
+                              className="input shadow-main flex-4"
+                              value={task.date}
+                            />
+
+                            {/* Save button for new task*/}
+                            <button className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer">
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))
           )}
@@ -409,7 +515,7 @@ function Home() {
         <div>
           <div className="fixed inset-0 bg-static-text opacity-80 flex items-center justify-center z-6"></div>
           <div className="fixed inset-0 flex items-center justify-center z-10">
-            <div className="bg-bg2 rounded-3xl shadow-main p-8 w-[40%]">
+            <div className="bg-bg2 rounded-3xl shadow-main p-8 md:w-[30%]">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-text text-2xl font-signika text-center w-[99%]">
                   New Task
@@ -468,7 +574,11 @@ function Home() {
                 )}
                 <div className="flex flex-row justify-between items-center gap-4">
                   {/* Input date for new task*/}
-                  <input type="date" className="input shadow-main flex-4" />
+                  <input
+                    type="date"
+                    className="input shadow-main flex-4"
+                    value={selectedDate}
+                  />
 
                   {/* Save button for new task*/}
                   <button className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer">
