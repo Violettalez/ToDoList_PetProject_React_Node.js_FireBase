@@ -200,6 +200,8 @@ function Home() {
   const addNewTask = (newTask) => {
     // Add the new task to the local state
     setTasksData((prevTasks) => [...prevTasks, newTask]);
+    setSelectedCategoryNT("");
+    setOpenCategoryListNT(false);
     // Add the new task to the backend
     try {
       const loginUser = localStorage.getItem("token");
@@ -602,7 +604,12 @@ function Home() {
                 </h2>
                 <p
                   className="text-text text-xl font-signika cursor-pointer"
-                  onClick={() => setOpenNewTask(!openNewTask)}
+                  onClick={() => {
+                    setOpenNewTask(!openNewTask);
+                    setNewTask({ title: "", category: "", date: today });
+                    setSelectedCategoryNT("");
+                    setOpenCategoryListNT(false);
+                  }}
                 >
                   <MdOutlineClose />
                 </p>
@@ -684,6 +691,8 @@ function Home() {
                       });
                       setOpenNewTask(false);
                       setNewTask({ title: "", category: "", date: today });
+                      setSelectedCategoryNT("");
+                      setOpenCategoryListNT(false);
                     }}
                     disabled={!newTask.title || !newTask.category}
                     // Disable button if title or category is empty
