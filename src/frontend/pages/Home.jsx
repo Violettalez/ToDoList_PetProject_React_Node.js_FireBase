@@ -449,7 +449,6 @@ function Home() {
             filteredTasks.map((task) => (
               <div key={task.id}>
                 <div
-                  key={task.id}
                   className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
                   onMouseEnter={() => setHoveredId(task.id)}
                   onMouseLeave={() => setHoveredId(null)}
@@ -513,7 +512,7 @@ function Home() {
                 </div>
                 {/*Overlay window for edit task*/}
                 {editTaskID === task.id && editWindow && (
-                  <div key={task.id}>
+                  <div>
                     <div className="fixed inset-0 bg-static-text opacity-80 flex items-center justify-center z-6"></div>
                     <div className="fixed inset-0 flex items-center justify-center z-10">
                       <div className="bg-bg2 rounded-3xl shadow-main p-8 md:w-[30%]">
@@ -533,9 +532,9 @@ function Home() {
                             type="text"
                             placeholder="Title"
                             className="input shadow-main"
-                            value={task.title}
+                            value={editTask.title}
                             onChange={(e) =>
-                              setEditTask({ ...task, title: e.target.value })
+                              setEditTask({ ...editTask, title: e.target.value })
                             }
                           />
 
@@ -569,7 +568,7 @@ function Home() {
                                       onClick={() => {
                                         handleCategoryChangeET(option.value);
                                         setEditTask({
-                                          ...task,
+                                          ...editTask,
                                           category: option.value,
                                         });
                                       }}
@@ -583,14 +582,14 @@ function Home() {
                           </div>
 
                           {/* Input for new category*/}
-                          {selectedCategoryNT === "New Category" && (
+                          {selectedCategoryET === "New Category" && (
                             <input
                               type="text"
                               placeholder="New category..."
                               className="input shadow-main"
                               onChange={(e) =>
                                 setEditTask({
-                                  ...task,
+                                  ...editTask,
                                   category: e.target.value,
                                 })
                               }
@@ -601,9 +600,9 @@ function Home() {
                             <input
                               type="date"
                               className="input shadow-main flex-4"
-                              value={task.date}
+                              value={editTask.date}
                               onChange={(e) =>
-                                setEditTask({ ...task, date: e.target.value })
+                                setEditTask({ ...editTask, date: e.target.value })
                               }
                             />
 
@@ -680,7 +679,6 @@ function Home() {
                       className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl"
                       ref={(el) => (refs.current.categoryNTRef = el)}
                     >
-                      >
                       {optionsCategory
                         .filter((option) => option.id !== 1)
                         .map((option) => (
@@ -716,8 +714,8 @@ function Home() {
                   <input
                     type="date"
                     className="input shadow-main flex-4"
-                    value={selectedDate}
-                    onChange={(e) => (newTask.date = e.target.value)}
+                    value={newTask.date}
+                    onChange={(e) => setNewTask({ ...newTask, date: e.target.value })}
                   />
 
                   {/* Save button for new task*/}
