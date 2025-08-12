@@ -11,7 +11,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { FaRegSadCry } from "react-icons/fa";
 
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 //import { userData } from "../../backend/api";
 import e from "cors";
@@ -231,6 +231,8 @@ function Home() {
     }
   };
 
+  const refs = useRef({});
+
   useEffect(
     () => {
       //setTasksData(getUserTasks());
@@ -239,7 +241,25 @@ function Home() {
       } else {
         document.documentElement.classList.remove("dark");
       }
+
+      function handleClickOutside(event) {
+        const isInside = Object.values(refs.current).some(
+          (ref) => ref && ref.contains(event.target)
+        );
+        if (!isInside) {
+          setOpenStatusList(false);
+          setOpenCategoryList(false);
+          setOpenCategoryListNT(false);
+          setOpenProfile(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
     },
+
     [isDark],
     [selectedDate]
   );
@@ -283,7 +303,10 @@ function Home() {
             {!openStatusList && <IoIosArrowDropdownCircle />}
           </div>
           {openStatusList && (
-            <ul className="absolute z-10 w-full bg-bg1 rounded-b-xl shadow-main mt-1">
+            <ul
+              className="absolute z-10 w-full bg-bg1 rounded-b-xl shadow-main mt-1"
+              ref={(el) => (refs.current.statusRef = el)}
+            >
               {optionsStatus.map((option) => (
                 <li
                   key={option.id}
@@ -309,7 +332,10 @@ function Home() {
             {!openCategoryList && <IoIosArrowDropdownCircle />}
           </div>
           {openCategoryList && (
-            <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
+            <ul
+              className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl"
+              ref={(el) => (refs.current.categoryRef = el)}
+            >
               {optionsCategory
                 .filter((option) => option.id !== 0)
                 .map((option) => (
@@ -364,7 +390,10 @@ function Home() {
 
             {/* Profile menu overlay*/}
             {openProfile && (
-              <div className="absolute top-10 bg-bg1 rounded-xl shadow-main p-4 w-[110%]">
+              <div
+                className="absolute top-10 bg-bg1 rounded-xl shadow-main p-4 w-[110%]"
+                ref={(el) => (refs.current.profileRef = el)}
+              >
                 <ul className="flex flex-col gap-2">
                   <li
                     className="flex justify-between items-center cursor-pointer"
@@ -418,7 +447,7 @@ function Home() {
             </div>
           ) : (
             filteredTasks.map((task) => (
-              <div>
+              <div key={task.id}>
                 <div
                   key={task.id}
                   className="flex justify-between items-center w-full gap-4 h-10 bg-bg2 rounded-xl px-4 shadow-main"
@@ -465,6 +494,12 @@ function Home() {
                           onClick={() => {
                             setEditTaskID(task.id);
                             setEditWindow(!editWindow);
+                            setEditTask({
+                              id: task.id,
+                              title: task.title,
+                              category: task.category,
+                              date: task.date,
+                            });
                           }}
                         >
                           <FaEdit className="text-text text-base cursor-pointer" />
@@ -478,7 +513,7 @@ function Home() {
                 </div>
                 {/*Overlay window for edit task*/}
                 {editTaskID === task.id && editWindow && (
-                  <div>
+                  <div key={task.id}>
                     <div className="fixed inset-0 bg-static-text opacity-80 flex items-center justify-center z-6"></div>
                     <div className="fixed inset-0 flex items-center justify-center z-10">
                       <div className="bg-bg2 rounded-3xl shadow-main p-8 md:w-[30%]">
@@ -521,7 +556,10 @@ function Home() {
                               )}
                             </div>
                             {openCategoryListNT && (
-                              <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
+                              <ul
+                                className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl"
+                                ref={(el) => (refs.current.categoryETRef = el)}
+                              >
                                 {optionsCategory
                                   .filter((option) => option.id !== 1)
                                   .map((option) => (
@@ -573,7 +611,7 @@ function Home() {
                             <button
                               onClick={() => {
                                 editTaskHandler(task.id, editTask);
-                                editTaskID(null);
+                                setEditTaskID(null);
                                 setEditWindow(!editWindow);
                               }}
                               className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer"
@@ -638,7 +676,11 @@ function Home() {
                     {!openCategoryListNT && <IoIosArrowDropdownCircle />}
                   </div>
                   {openCategoryListNT && (
-                    <ul className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl">
+                    <ul
+                      className="absolute z-10 w-full bg-bg1 mt-1 shadow-main rounded-b-xl"
+                      ref={(el) => (refs.current.categoryNTRef = el)}
+                    >
+                      >
                       {optionsCategory
                         .filter((option) => option.id !== 1)
                         .map((option) => (
