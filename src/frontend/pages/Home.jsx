@@ -13,7 +13,7 @@ import { FaRegSadCry } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-//import { userData } from "../../backend/api";
+import { userData } from "../../backend/api";
 import e from "cors";
 
 function Home() {
@@ -82,6 +82,7 @@ function Home() {
     try {
       const loginUser = localStorage.getItem("token");
       const res = await userData(loginUser, selectedDate);
+      console.log(res.data.tasks);
       return res.data.tasks;
     } catch (error) {
       console.error("Error fetching user tasks:", error);
@@ -197,7 +198,7 @@ function Home() {
 
   //Sorting data
 
-  const filteredTasks = tasksData.filter((task) => {
+  const filteredTasks = (tasksData || []).filter((task) => {
     const statusMatch =
       selectedStatus === "All" ||
       selectedStatus === "" ||
