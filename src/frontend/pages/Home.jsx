@@ -31,7 +31,7 @@ function Home() {
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
   ]);
-  const [tasksData, setTasksData] = useState([
+  /*const [tasksData, setTasksData] = useState([
     {
       id: 1,
       title: "Task 1",
@@ -102,7 +102,7 @@ function Home() {
       category: "Work",
       date: "2025-08-05",
     },
-  ]);
+  ]);*/
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
@@ -149,11 +149,11 @@ function Home() {
     setOpenCategoryListNT(false);
   };
 
-  const getUserTasks = () => {
+  const getUserTasks = async () => {
     try {
       const loginUser = localStorage.getItem("token");
-      //const res = await userData(loginUser,selectedDate);
-      //return res.data.tasks;
+      const res = await userData(loginUser, selectedDate);
+      return res.data.tasks;
     } catch (error) {
       console.error("Error fetching user tasks:", error);
     }
@@ -235,7 +235,7 @@ function Home() {
 
   useEffect(
     () => {
-      //setTasksData(getUserTasks());
+      setTasksData(getUserTasks(selectedDate));
       if (isDark) {
         document.documentElement.classList.add("dark");
       } else {
@@ -534,7 +534,10 @@ function Home() {
                             className="input shadow-main"
                             value={editTask.title}
                             onChange={(e) =>
-                              setEditTask({ ...editTask, title: e.target.value })
+                              setEditTask({
+                                ...editTask,
+                                title: e.target.value,
+                              })
                             }
                           />
 
@@ -602,7 +605,10 @@ function Home() {
                               className="input shadow-main flex-4"
                               value={editTask.date}
                               onChange={(e) =>
-                                setEditTask({ ...editTask, date: e.target.value })
+                                setEditTask({
+                                  ...editTask,
+                                  date: e.target.value,
+                                })
                               }
                             />
 
@@ -715,7 +721,9 @@ function Home() {
                     type="date"
                     className="input shadow-main flex-4"
                     value={newTask.date}
-                    onChange={(e) => setNewTask({ ...newTask, date: e.target.value })}
+                    onChange={(e) =>
+                      setNewTask({ ...newTask, date: e.target.value })
+                    }
                   />
 
                   {/* Save button for new task*/}
