@@ -31,78 +31,7 @@ function Home() {
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
   ]);
-  /*const [tasksData, setTasksData] = useState([
-    {
-      id: 1,
-      title: "Task 1",
-      status: "Active",
-      category: "Work",
-      date: "2025-08-05",
-    },
-    {
-      id: 2,
-      title: "Task 2",
-      status: "Completed",
-      category: "Home",
-      date: "2025-08-05",
-    },
-    {
-      id: 3,
-      title: "Task 3",
-      status: "Active",
-      category: "Study",
-      date: "2025-08-05",
-    },
-    {
-      id: 4,
-      title: "Task 4",
-      status: "Completed",
-      category: "Work",
-      date: "2025-08-05",
-    },
-    {
-      id: 5,
-      title: "Task 5",
-      status: "Completed",
-      category: "Home",
-      date: "2025-08-05",
-    },
-    {
-      id: 6,
-      title: "Task 6",
-      status: "Completed",
-      category: "Study",
-      date: "2025-08-05",
-    },
-    {
-      id: 7,
-      title: "Task 7",
-      status: "Active",
-      category: "Work",
-      date: "2025-08-05",
-    },
-    {
-      id: 8,
-      title: "Task 8",
-      status: "Completed",
-      category: "Home",
-      date: "2025-08-05",
-    },
-    {
-      id: 9,
-      title: "Task 9",
-      status: "Active",
-      category: "Study",
-      date: "2025-08-05",
-    },
-    {
-      id: 10,
-      title: "Task 10",
-      status: "Completed",
-      category: "Work",
-      date: "2025-08-05",
-    },
-  ]);*/
+  const [tasksData, setTasksData] = useState();
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
