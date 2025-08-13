@@ -39,8 +39,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
-
 //Логін користувача
 app.post("/login", async (req, res) => {
   const { login, password } = req.body;
@@ -71,7 +69,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
 //Перевірка токену
 async function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -88,6 +85,28 @@ async function verifyToken(req, res, next) {
 
 app.get("/profile", verifyToken, (req, res) => {
   res.json({ message: "Access granted", user: req.user });
+});
+
+//Tasks CRUD
+//Read
+app.get("/tasks", verifyToken, async (req, res) => {
+  try{
+    const uid = req.user.uid;
+    const date = req.query;
+    let q = db.collection("tasks").where("uid", "==", uid);
+    q = q.where("date", "==", date);
+
+    const snapshot = await q.orderBy("createdAt", "desc").get();
+
+    const tasks = [];
+    snapshot.forEach((doc) => {
+      tasks.push({id: doc.id, ...doc.data()});
+    })
+    res.json({tasks});
+  } catch (err){
+    console.error("Get tasks error:", err);
+    res.status(500).json({error: err.message});
+  }
 });
 
 app.listen(3000, () => console.log("The server is running on http://localhost:3000"));
