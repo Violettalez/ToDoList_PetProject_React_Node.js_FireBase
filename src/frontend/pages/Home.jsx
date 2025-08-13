@@ -32,7 +32,7 @@ function Home() {
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
   ]);
-  const [tasksData, setTasksData] = useState();
+  const [tasksData, setTasksData] = useState([]);
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
@@ -79,10 +79,10 @@ function Home() {
     setOpenCategoryListNT(false);
   };
 
-  const getUserTasks = async () => {
+  /* const getUserTasks = async () => {
     try {
       const loginUser = localStorage.getItem("token");
-      let decoded="";
+      let decoded = "";
       if (loginUser) {
         decoded = jwtDecode(loginUser);
         console.log(decoded); // весь payload токена
@@ -94,7 +94,7 @@ function Home() {
     } catch (error) {
       console.error("Error fetching user tasks:", error);
     }
-  };
+  };*/
 
   const changeTaskStatus = (idTask) => {
     // Update the task status in the local state
@@ -172,7 +172,7 @@ function Home() {
 
   useEffect(
     () => {
-      setTasksData(getUserTasks(selectedDate));
+      //setTasksData(getUserTasks());
       if (isDark) {
         document.documentElement.classList.add("dark");
       } else {
