@@ -22,9 +22,6 @@ function Autorization() {
       alert("Password is required");
       return;
     }
-    if (validatePassword(trimmedPassword) === false) {
-      return;
-    }
     try {
       const res = await loginUser(trimmedLogin, trimmedPassword);
       localStorage.setItem("token", res.data.idToken);
