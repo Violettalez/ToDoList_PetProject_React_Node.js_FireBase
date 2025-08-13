@@ -9,6 +9,7 @@ import { FiPlus } from "react-icons/fi";
 import { IoExit } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
 import { FaRegSadCry } from "react-icons/fa";
+import jwtDecode from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -81,7 +82,13 @@ function Home() {
   const getUserTasks = async () => {
     try {
       const loginUser = localStorage.getItem("token");
-      const res = await userData(loginUser, selectedDate);
+      let decoded="";
+      if (loginUser) {
+        decoded = jwtDecode(loginUser);
+        console.log(decoded); // весь payload токена
+        console.log(decoded.user_id); // uid Firebase
+      }
+      const res = await userData(decoded.user_id, selectedDate);
       console.log(res.data.tasks);
       return res.data.tasks;
     } catch (error) {
