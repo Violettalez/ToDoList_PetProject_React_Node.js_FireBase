@@ -10,7 +10,7 @@ function Autorization() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    /*const trimmedLogin = login.trim();
+    const trimmedLogin = login.trim();
     const trimmedPassword = password.trim();
     if (!trimmedLogin) {
       setError("Login is required");
@@ -24,10 +24,10 @@ function Autorization() {
     }
     if (validatePassword(trimmedPassword) === false) {
       return;
-    }*/
+    }
     try {
-      //const res = await loginUser(trimmedLogin, trimmedPassword);
-      //localStorage.setItem("token", res.data.idToken);
+      const res = await loginUser(trimmedLogin, trimmedPassword);
+      localStorage.setItem("token", res.data.idToken);
       navigate("/home");
       console.clear();
       console.log("Login successful");

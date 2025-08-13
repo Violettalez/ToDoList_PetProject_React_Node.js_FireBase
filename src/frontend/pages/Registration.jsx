@@ -64,7 +64,7 @@ function Registration() {
       return;
     }
     try {
-      //await registerUser(login, email, password);
+      await registerUser(login, email, password);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Error");
