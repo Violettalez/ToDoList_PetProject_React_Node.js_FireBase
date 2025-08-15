@@ -16,8 +16,11 @@ function authHeader(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
 }
 //Get a list of tasks with a filter
-export const userData = (token, date) => 
-  API.get("/tasks", date, ...authHeader(token));
+export const userData = (token, { date }) =>
+  API.get("/tasks",{
+    headers: { Authorization: `Bearer ${token}` },
+    params: { date }
+  });
 
 //Create a task
 export const addTask = (token, {title, category, date, status = "Active"}) => 
@@ -26,6 +29,6 @@ export const addTask = (token, {title, category, date, status = "Active"}) =>
 //Update a task
 export const updateTask = (token, id, updateTask) =>
   API.put("/tasks/${id}", updateTask, authHeader(token));
-
+//Delete a task
 export const deleteTaskById = (token, id) =>
   API.delete("/tasks/${id}", authHeader(token));
