@@ -148,19 +148,16 @@ function Home() {
     }
   };
 
-  const editTaskHandler = (idTask, updatedTask) => {
-    // Update the task in the local state
-    setTasksData((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === idTask ? { ...task, ...updatedTask } : task
-      )
-    );
-    // Update the task in the backend
+  const editTaskHandler = async (idTask, updatedTask) => {
     try {
-      const loginUser = localStorage.getItem("token");
-      //const res = await updateTask(loginUser, idTask, updatedTask);
+      const res = await updateTask(token, idTask, {
+        title: updatedTask.title,
+        category: updatedTask.category,
+        date: updatedTask.date,
+      });
       console.log("Task edited successfully");
-      //setTasksData(getUserTasks());
+      const updatedTasks = await getUserTasks();
+      setTasksData(updatedTasks || []);
     } catch (error) {
       console.error("Error editing task:", error);
     }
