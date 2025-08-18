@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-import { userData, addTask } from "../../backend/api";
+import { userData, addTask, deleteTaskById } from "../../backend/api";
 import axios from "axios";
 import e from "cors";
 
@@ -121,26 +121,21 @@ function Home() {
     }
   };
 
-  const deleteTask = (idTask) => {
-    // Remove the task from the local state
-    setTasksData((prevTasks) => prevTasks.filter((task) => task.id !== idTask));
-    // Remove the task from the backend
+  const deleteTask = async (idTask) => {
     try {
-      const loginUser = localStorage.getItem("token");
-      //const res = await deleteTaskById(loginUser, idTask);
+      console.log(idTask);
+      const res = await deleteTaskById(token, idTask);
       console.log("Task deleted successfully");
-      //setTasksData(getUserTasks());
+      const updatedTasks = await getUserTasks();
+      setTasksData(updatedTasks || []);
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
 
   const addNewTask = async (newTask) => {
-    // Add the new task to the local state
-    //setTasksData((prevTasks) => [...prevTasks, newTask]);
     setSelectedCategoryNT("");
     setOpenCategoryListNT(false);
-    // Add the new task to the backend
     try {
       const res = await addTask(token, {
         title: newTask.title,
