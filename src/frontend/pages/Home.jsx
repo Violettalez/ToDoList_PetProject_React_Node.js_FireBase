@@ -84,13 +84,11 @@ function Home() {
   let decoded = "";
   if (token) {
     decoded = jwtDecode(token);
-    console.log(decoded); // весь payload токена
   }
 
   const getUserTasks = async () => {
     try {
       const res = await userData(token, selectedDate);
-      console.log(res.data.tasks);
       return res.data.tasks;
     } catch (error) {
       console.error("Error fetching user tasks:", error);
