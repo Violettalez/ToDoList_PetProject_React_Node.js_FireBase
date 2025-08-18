@@ -14,7 +14,13 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-import { userData, addTask, deleteTaskById } from "../../backend/api";
+import {
+  userData,
+  addTask,
+  deleteTaskById,
+  updateTask,
+} from "../../backend/api";
+
 import axios from "axios";
 import e from "cors";
 
@@ -84,13 +90,11 @@ function Home() {
   let decoded = "";
   if (token) {
     decoded = jwtDecode(token);
-    console.log(decoded); // весь payload токена
   }
 
   const getUserTasks = async () => {
     try {
       const res = await userData(token, selectedDate);
-      console.log(res.data.tasks);
       return res.data.tasks;
     } catch (error) {
       console.error("Error fetching user tasks:", error);
@@ -150,19 +154,16 @@ function Home() {
     }
   };
 
-  const editTaskHandler = (idTask, updatedTask) => {
-    // Update the task in the local state
-    setTasksData((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === idTask ? { ...task, ...updatedTask } : task
-      )
-    );
-    // Update the task in the backend
+  const editTaskHandler = async (idTask, updatedTask) => {
     try {
-      const loginUser = localStorage.getItem("token");
-      //const res = await updateTask(loginUser, idTask, updatedTask);
+      const res = await updateTask(token, idTask, {
+        title: updatedTask.title,
+        category: updatedTask.category,
+        date: updatedTask.date,
+      });
       console.log("Task edited successfully");
-      //setTasksData(getUserTasks());
+      const updatedTasks = await getUserTasks();
+      setTasksData(updatedTasks || []);
     } catch (error) {
       console.error("Error editing task:", error);
     }
