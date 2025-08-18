@@ -9,12 +9,13 @@ import { FiPlus } from "react-icons/fi";
 import { IoExit } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
 import { FaRegSadCry } from "react-icons/fa";
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-import { userData } from "../../backend/api";
+import { userData, addTask } from "../../backend/api";
+import axios from "axios";
 import e from "cors";
 
 function Home() {
@@ -79,22 +80,22 @@ function Home() {
     setOpenCategoryListNT(false);
   };
 
-  /* const getUserTasks = async () => {
+  const token = localStorage.getItem("token");
+  let decoded = "";
+  if (token) {
+    decoded = jwtDecode(token);
+    console.log(decoded); // весь payload токена
+  }
+
+  const getUserTasks = async () => {
     try {
-      const loginUser = localStorage.getItem("token");
-      let decoded = "";
-      if (loginUser) {
-        decoded = jwtDecode(loginUser);
-        console.log(decoded); // весь payload токена
-        console.log(decoded.user_id); // uid Firebase
-      }
-      const res = await userData(decoded.user_id, selectedDate);
+      const res = await userData(token, selectedDate);
       console.log(res.data.tasks);
       return res.data.tasks;
     } catch (error) {
       console.error("Error fetching user tasks:", error);
     }
-  };*/
+  };
 
   const changeTaskStatus = (idTask) => {
     // Update the task status in the local state
@@ -134,15 +135,14 @@ function Home() {
     }
   };
 
-  const addNewTask = (newTask) => {
+  const addNewTask = async (newTask) => {
     // Add the new task to the local state
-    setTasksData((prevTasks) => [...prevTasks, newTask]);
+    //setTasksData((prevTasks) => [...prevTasks, newTask]);
     setSelectedCategoryNT("");
     setOpenCategoryListNT(false);
     // Add the new task to the backend
     try {
-      const loginUser = localStorage.getItem("token");
-      //const res = await addTask(loginUser, newTask.title, newTask.category, newTask.date);
+      const res = await addTask(token, {title: newTask.title, category: newTask.category, date: newTask.date});
       console.log("New task added successfully");
       //setTasksData(getUserTasks());
     } catch (error) {
@@ -172,7 +172,12 @@ function Home() {
 
   useEffect(
     () => {
-      //setTasksData(getUserTasks());
+      const fetchTasks = async () => {
+        const tasks = await getUserTasks();
+        setTasksData(tasks || []);
+      };
+      fetchTasks();
+      
       if (isDark) {
         document.documentElement.classList.add("dark");
       } else {
@@ -694,3 +699,4 @@ function Home() {
   );
 }
 export default Home;
+
