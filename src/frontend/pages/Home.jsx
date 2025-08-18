@@ -311,13 +311,13 @@ function Home() {
           {/* Profile button*/}
           <div className="relative flex">
             <div
-              className="flex items-center gap-2 md:gap-4"
+              className="flex items-center gap-2 md:gap-4 cursor-pointer"
               onClick={() => setOpenProfile(!openProfile)}
             >
               <div className="h-7 md:h-10 aspect-square rounded-full bg-[url(/persone.png)] bg-cover bg-center bg-no-repeat"></div>
               {/* This is a placeholder for user photo */}
               <p className="text-signika text-base md:text-xl text-text">
-                Login
+                {decoded.name}
               </p>{" "}
               {/* This is a placeholder for user login */}
             </div>
