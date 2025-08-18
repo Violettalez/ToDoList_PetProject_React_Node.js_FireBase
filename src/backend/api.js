@@ -27,8 +27,8 @@ export const addTask = (token, {title, category, date, status = "Active"}) =>
   API.post("/tasks", {title, category, date, status}, authHeader(token));
 
 //Update a task
-export const updateTask = (token, id, updateTask) =>
-  API.put(`/tasks/${id}`, updateTask, authHeader(token));
+export const updateTask = (token, id, data) =>
+  API.put(`/tasks/${id}`, data, authHeader(token));
 
 //Delete a task
 export const deleteTaskById = (token, id) =>
