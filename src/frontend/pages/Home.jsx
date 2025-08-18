@@ -9,7 +9,7 @@ import { FiPlus } from "react-icons/fi";
 import { IoExit } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
 import { FaRegSadCry } from "react-icons/fa";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -142,9 +142,14 @@ function Home() {
     setOpenCategoryListNT(false);
     // Add the new task to the backend
     try {
-      const res = await addTask(token, {title: newTask.title, category: newTask.category, date: newTask.date});
+      const res = await addTask(token, {
+        title: newTask.title,
+        category: newTask.category,
+        date: newTask.date,
+      });
       console.log("New task added successfully");
-      //setTasksData(getUserTasks());
+      const updatedTasks = await getUserTasks();
+      setTasksData(updatedTasks || []);
     } catch (error) {
       console.error("Error adding new task:", error);
     }
@@ -170,58 +175,55 @@ function Home() {
 
   const refs = useRef({});
 
-  useEffect(
-    () => {
-      const fetchTasks = async () => {
-        const tasks = await getUserTasks();
-        setTasksData(tasks || []);
-      };
-      fetchTasks();
-      
-      if (isDark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const tasks = await getUserTasks();
+      setTasksData(tasks || []);
+    };
+    fetchTasks();
+
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    function handleClickOutside(event) {
+      const isInside = Object.values(refs.current).some(
+        (ref) => ref && ref.contains(event.target)
+      );
+      if (!isInside) {
+        setOpenStatusList(false);
+        setOpenCategoryList(false);
+        setOpenCategoryListNT(false);
+        setOpenProfile(false);
       }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
 
-      function handleClickOutside(event) {
-        const isInside = Object.values(refs.current).some(
-          (ref) => ref && ref.contains(event.target)
-        );
-        if (!isInside) {
-          setOpenStatusList(false);
-          setOpenCategoryList(false);
-          setOpenCategoryListNT(false);
-          setOpenProfile(false);
-        }
-      }
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    },
-
-    [isDark],
-    [selectedDate]
-  );
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDark, selectedDate]);
 
   const toggleTheme = () => setIsDark(!isDark);
 
   //Sorting data
 
-  const filteredTasks = (tasksData || []).filter((task) => {
-    const statusMatch =
-      selectedStatus === "All" ||
-      selectedStatus === "" ||
-      task.status === selectedStatus;
-    const categoryMatch =
-      selectedCategory === "All" ||
-      selectedCategory === "" ||
-      task.category === selectedCategory;
-    const dateMatch = task.date === selectedDate;
-    return statusMatch && categoryMatch && dateMatch;
-  });
+  const filteredTasks = (Array.isArray(tasksData) ? tasksData : []).filter(
+    (task) => {
+      const statusMatch =
+        selectedStatus === "All" ||
+        selectedStatus === "" ||
+        task.status === selectedStatus;
+      const categoryMatch =
+        selectedCategory === "All" ||
+        selectedCategory === "" ||
+        task.category === selectedCategory;
+      const dateMatch = task.date === selectedDate;
+      return statusMatch && categoryMatch && dateMatch;
+    }
+  );
 
   return (
     <div className=" min-h-screen relative flex flex-col items-center gap-4 bg-gradient-to-b from-bg1 to-accent1">
@@ -699,4 +701,3 @@ function Home() {
   );
 }
 export default Home;
-
