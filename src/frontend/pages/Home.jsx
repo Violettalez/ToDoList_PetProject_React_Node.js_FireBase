@@ -19,6 +19,7 @@ import {
   addTask,
   deleteTaskById,
   updateTask,
+  updateTaskStatus,
 } from "../../backend/api";
 
 import axios from "axios";
@@ -32,6 +33,7 @@ function Home() {
     { id: 2, value: "Active", label: "Active" },
     { id: 3, value: "Completed", label: "Completed" },
   ]);
+
   const [optionsCategory, setOptionsCategory] = useState([
     { id: 0, value: "New Category", label: "New Category" },
     { id: 1, value: "All", label: "All" },
@@ -39,6 +41,7 @@ function Home() {
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
   ]);
+  
   const [tasksData, setTasksData] = useState([]);
 
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -101,25 +104,12 @@ function Home() {
     }
   };
 
-  const changeTaskStatus = (idTask) => {
-    // Update the task status in the local state
-    setTasksData((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === idTask
-          ? {
-              ...task,
-              status: task.status === "Active" ? "Completed" : "Active",
-            }
-          : task
-      )
-    );
-
-    // Update the task status in the backend
+  const changeTaskStatus = async (idTask) => {
     try {
-      const loginUser = localStorage.getItem("token");
-      //const res = await updateTaskStatus(loginUser, idTask);
+      const res = await updateTaskStatus(token, idTask);
       console.log("Task status updated successfully");
-      //setTasksData(getUserTasks());
+      const updatedTasks = await getUserTasks();
+      setTasksData(updatedTasks || []);
     } catch (error) {
       console.error("Error updating task status:", error);
     }
