@@ -153,7 +153,7 @@ app.put("/tasks/:id", verifyToken, async (req, res) => {
     if (!taskDoc.exists) {
       return res.status(404).json({ error: "Task not found" });
     }
-    
+
     if (taskDoc.data().uid !== uid) {
       return res.status(403).json({ error: "Permission denied" });
     }
@@ -172,6 +172,34 @@ app.put("/tasks/:id", verifyToken, async (req, res) => {
     res.json({ id: taskRef.id, ...updatedDoc.data() });
   } catch (err) {
     console.error("Update task error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//Update task status
+app.patch("/tasks/:id", verifyToken, async (req, res) => {
+  try {
+    const uid = req.user.uid;
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const taskRef = db.collection("tasks").doc(id);
+    const taskDoc = await taskRef.get();
+
+    if (!taskDoc.exists) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    if (taskDoc.data().uid !== uid) {
+      return res.status(403).json({ error: "Permission denied" });
+    }
+
+    await taskRef.update({ status, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+
+    const updatedDoc = await taskRef.get();
+    res.json({ id: taskRef.id, ...updatedDoc.data() });
+  } catch (err) {
+    console.error("Update task status error:", err);
     res.status(500).json({ error: err.message });
   }
 });
