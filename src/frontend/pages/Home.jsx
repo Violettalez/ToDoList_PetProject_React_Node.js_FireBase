@@ -14,7 +14,13 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-import { userData, addTask, deleteTaskById } from "../../backend/api";
+import {
+  userData,
+  addTask,
+  deleteTaskById,
+  updateTask,
+} from "../../backend/api";
+
 import axios from "axios";
 import e from "cors";
 
