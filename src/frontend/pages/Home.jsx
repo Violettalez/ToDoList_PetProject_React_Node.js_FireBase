@@ -40,8 +40,9 @@ function Home() {
     { id: 2, value: "Work", label: "Work" },
     { id: 3, value: "Home", label: "Home" },
     { id: 4, value: "Study", label: "Study" },
+    { id: 5, value: "Others", label: "Others" },
   ]);
-  
+
   const [tasksData, setTasksData] = useState([]);
 
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -205,7 +206,10 @@ function Home() {
       const categoryMatch =
         selectedCategory === "All" ||
         selectedCategory === "" ||
-        task.category === selectedCategory;
+        task.category === selectedCategory ||
+        (selectedCategory === "Others"
+          ? !["Home", "Work", "Study"].includes(task.category)
+          : task.category === selectedCategory);
       const dateMatch = task.date === selectedDate;
       return statusMatch && categoryMatch && dateMatch;
     }
