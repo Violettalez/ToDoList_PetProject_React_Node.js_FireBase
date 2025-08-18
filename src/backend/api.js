@@ -34,5 +34,5 @@ export const updateTask = (token, id, data) =>
 export const deleteTaskById = (token, id) =>
   API.delete(`/tasks/${id}`, authHeader(token));
 
-export const updateTaskStatus = (token, id, status) =>
-  API.patch(`/tasks/${id}`, { status }, authHeader(token));
+export const updateTaskStatus = (token, id) =>
+  API.put(`/taskStatus/${id}`, {}, authHeader(token));

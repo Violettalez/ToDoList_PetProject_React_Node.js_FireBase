@@ -77,7 +77,6 @@ async function verifyToken(req, res, next) {
   try {
     const decoded = await admin.auth().verifyIdToken(token);
     req.user = decoded;
-    console.log("Received token:", req.headers.authorization);
     next();
   } catch (err) {
     res.status(401).send("Invalid token");
@@ -106,7 +105,6 @@ app.get("/tasks", verifyToken, async (req, res) => {
     snapshot.forEach((doc) => {
       tasks.push({id: doc.id, ...doc.data()});
     })
-    console.log("Tasks: ", tasks)
     res.json({tasks});
   } catch (err){
     console.error("Get tasks error:", err);
@@ -177,11 +175,10 @@ app.put("/tasks/:id", verifyToken, async (req, res) => {
 });
 
 //Update task status
-app.patch("/tasks/:id", verifyToken, async (req, res) => {
+app.put("/taskStatus/:id", verifyToken, async (req, res) => {
   try {
     const uid = req.user.uid;
     const { id } = req.params;
-    const { status } = req.body;
 
     const taskRef = db.collection("tasks").doc(id);
     const taskDoc = await taskRef.get();
@@ -194,7 +191,12 @@ app.patch("/tasks/:id", verifyToken, async (req, res) => {
       return res.status(403).json({ error: "Permission denied" });
     }
 
-    await taskRef.update({ status, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+
+    let currentStatus = taskDoc.data().status;
+
+    let newStatus = currentStatus === "Active" ? "Completed" : "Active";
+
+    await taskRef.update({ status: newStatus, updatedAt: admin.firestore.FieldValue.serverTimestamp() });
 
     const updatedDoc = await taskRef.get();
     res.json({ id: taskRef.id, ...updatedDoc.data() });
