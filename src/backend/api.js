@@ -33,3 +33,6 @@ export const updateTask = (token, id, data) =>
 //Delete a task
 export const deleteTaskById = (token, id) =>
   API.delete(`/tasks/${id}`, authHeader(token));
+
+export const updateTaskStatus = (token, id, status) =>
+  API.patch(`/tasks/${id}`, { status }, authHeader(token));
