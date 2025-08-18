@@ -141,5 +141,29 @@ app.post("/tasks", verifyToken, async (req, res) => {
 });
 
 //Delete
+app.delete("/tasks/:id", verifyToken, async (req, res) => {
+  try {
+    const uid = req.user.uid;
+    const { id } = req.params;
+
+    const taskRef = db.collection("tasks").doc(id);
+    const taskDoc = await taskRef.get();
+
+    if (!taskDoc.exists) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    if (taskDoc.data().uid !== uid) {
+      return res.status(403).json({ error: "Permission denied" });
+    }
+
+    await taskRef.delete();
+
+    res.json({ message: "Task deleted successfully", id });
+  } catch (err) {
+    console.error("Delete task error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.listen(3000, () => console.log("The server is running on http://localhost:3000"));
