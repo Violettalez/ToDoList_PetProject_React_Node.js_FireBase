@@ -662,7 +662,7 @@ function Home() {
 
                   {/* Save button for new task*/}
                   <button
-                    className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer"
+                    className="flex-1 bg-details py-2 px-4 rounded-xl font-rubik text-base text-bg1 cursor-pointer disabled:bg-accent1 disabled:cursor-auto"
                     onClick={() => {
                       addNewTask({
                         id: tasksData.length + 1,
