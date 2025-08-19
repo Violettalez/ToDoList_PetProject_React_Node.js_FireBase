@@ -44,6 +44,7 @@ function Home() {
   ]);
 
   const [tasksData, setTasksData] = useState([]);
+  const [loading, setLoading] = useState();
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [openStatusList, setOpenStatusList] = useState(false);
@@ -164,8 +165,15 @@ function Home() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const tasks = await getUserTasks();
-      setTasksData(tasks || []);
+      try {
+        setLoading(true);
+        const tasks = await getUserTasks();
+        setTasksData(tasks || []);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchTasks();
 
@@ -370,7 +378,22 @@ function Home() {
 
         {/*Main table with tasks*/}
         <div className="flex flex-col gap-4 justify-center w-full">
-          {filteredTasks.length === 0 ? (
+          {loading ? (
+            // показываем крутилку
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-accent1"></div>
+            </div>
+          ) : filteredTasks.length === 0 ? (
+            // если загрузка закончилась, но задач нет
+            <div className="flex flex-col items-center justify-center gap-1">
+              <p className="text-text text-3xl font-signika text-center">
+                <FaRegSadCry />
+              </p>
+              <p className="text-text text-base md:text-xl font-signika text-center">
+                No tasks found
+              </p>
+            </div>
+          ) : filteredTasks.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-text text-3xl font-signika text-center">
                 <FaRegSadCry />
